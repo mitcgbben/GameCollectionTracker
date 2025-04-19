@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView noGames;
 
     // game recycle view //
-    private static String plink = "plink";
+//    private static String plink = "plink";
     private DBManager dbMan;
     private List<Game> games;
     private GameListAdapter adapter;
