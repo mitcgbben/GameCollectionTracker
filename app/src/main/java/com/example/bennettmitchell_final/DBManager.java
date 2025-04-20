@@ -54,6 +54,11 @@ public class DBManager {
         return insertGame(title, "", null, NOINFO, NOINFO, NOINFO, NOINFO, 0, 0);
     } // cat thumbs up emoji
 
+    // insert a game object //
+    public long insertGame(Game g){
+        return insertGame(g.getTitle(), g.getReleaseDate(), g.getBoxArt(), g.getDeveloper(), g.getPublisher(), g.getDescription(), g.getUserNotes(), g.getGameStatus(), g.getPlatformID());
+    }
+
 
     public List<Game> getGames(){
         SQLiteDatabase db = dbHelper.getReadableDatabase();

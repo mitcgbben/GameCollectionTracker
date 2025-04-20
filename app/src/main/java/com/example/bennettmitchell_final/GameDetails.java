@@ -86,7 +86,10 @@ public class GameDetails extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.edit){
-            Log.i("plink", "Edit Game Clicked for " + game.getGameID());
+            Intent gameForm = new Intent(this, GameForm.class);
+            gameForm.putExtra("Action", true);
+            gameForm.putExtra("Game", game);
+            startActivity(gameForm);
         }
         else if (id == R.id.delete){
             dbMan.deleteGame(game.getGameID());

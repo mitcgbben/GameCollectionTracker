@@ -31,8 +31,7 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
             titleLabel = view.findViewById(R.id.gameTitle);
             boxArt = view.findViewById(R.id.boxArt);
         }
-        // TODO: getters for all the contents of each view
-        // wow i didnt know to do made it green thats cool
+        // getters for all the contents of each view //
         public TextView getTitleLabel(){
             return titleLabel;
         }

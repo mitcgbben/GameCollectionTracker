@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         addGameButton = findViewById(R.id.addGameButton);
         addGameButton.setOnClickListener((View v) -> {
-            Log.i("plink", "Button pressed");
-            dbMan.insertGame("plink");
+            Intent addGame = new Intent(this, AddGame.class);
+            startActivity(addGame);
         });
     }
 

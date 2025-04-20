@@ -27,4 +27,24 @@
 
     <string name="EditGame">Edit</string>
     <string name="DeleteGame">Delete</string>
+
+    <!-- Add Game -->
+    <string name="addGameLabel">Add Game</string>
+    <string name="searchLabel">Find Game:</string>
+    <string name="search">Search</string>
+    <string name="or">or!</string>
+    <string name="blankTemplateButton">Use a blank template!</string>
+
+    <!-- Game Form -->
+    <string name="editGameLabel">Edit Game</string>
+    <string name="titleLabel">Title:</string>
+    <string name="releaseDateLabel">Release Date:</string>
+    <string name="developerLabel">Developer: </string>
+    <string name="publisherLabel">Publisher:</string>
+    <string name="platformLabel">Platform: </string>
+    <string name="statusLabel">Status:</string>
+    <string name="descriptionLabel">Description:</string>
+    <string name="submitButton">Submit</string>
+    <string name="cat">cat</string>
+
 </resources>

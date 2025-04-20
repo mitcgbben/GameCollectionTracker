@@ -16,6 +16,12 @@
             android:name=".GameDetails"
             android:exported="false"
             android:theme="@style/Theme.BennettMitchell_Final" />
+        <activity android:name=".AddGame"
+            android:exported="false"
+            android:theme="@style/Theme.BennettMitchell_Final"/>
+        <activity android:name=".GameForm"
+            android:exported="false"
+            android:theme="@style/Theme.BennettMitchell_Final"/>
         <activity
             android:name=".MainActivity"
             android:exported="true">

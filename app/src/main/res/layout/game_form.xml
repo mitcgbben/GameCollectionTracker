@@ -1,6 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/backButton"
+        android:layout_width="126dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/backButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionEdit" />
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="126dp"
+        android:layout_height="60dp"
+        android:text="@string/submitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.252"
+        app:layout_constraintStart_toEndOf="@+id/backButton"
+        app:layout_constraintTop_toTopOf="@+id/backButton" />
+
+    <TextView
+        android:id="@+id/topLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/addGameLabel"
+        android:textSize="30sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="28dp"
+        android:labelFor="@id/titleEdit"
+        android:text="@string/titleLabel"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/topLabel"
+        app:layout_constraintTop_toBottomOf="@+id/topLabel" />
+
+    <TextView
+        android:id="@+id/releaseDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:labelFor="@id/releaseDateEdit"
+        android:text="@string/releaseDateLabel"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/titleLabel"
+        app:layout_constraintTop_toBottomOf="@+id/titleLabel" />
+
+    <TextView
+        android:id="@+id/developerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:labelFor="@id/developerEdit"
+        android:text="@string/developerLabel"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/releaseDateLabel"
+        app:layout_constraintTop_toBottomOf="@+id/releaseDateLabel" />
+
+    <TextView
+        android:id="@+id/publisherLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/publisherLabel"
+        android:textSize="17sp"
+        android:labelFor="@id/publisherEdit"
+        app:layout_constraintStart_toStartOf="@+id/developerLabel"
+        app:layout_constraintTop_toBottomOf="@+id/developerLabel" />
+
+    <TextView
+        android:id="@+id/platformLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:labelFor="@id/platformCombo"
+        android:text="@string/platformLabel"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/publisherLabel"
+        app:layout_constraintTop_toBottomOf="@+id/publisherLabel" />
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:labelFor="@id/statusCombo"
+        android:text="@string/statusLabel"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="@+id/platformLabel"
+        app:layout_constraintTop_toBottomOf="@+id/platformLabel" />
+
+    <TextView
+        android:id="@+id/descriptionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/descriptionLabel"
+        android:textSize="17sp"
+        android:labelFor="@id/descriptionEdit"
+        app:layout_constraintStart_toStartOf="@+id/statusLabel"
+        app:layout_constraintTop_toBottomOf="@+id/statusLabel" />
+
+    <EditText
+        android:id="@+id/titleEdit"
+        android:layout_width="209dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="56dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        android:autofillHints="Game Title"
+        app:layout_constraintBottom_toBottomOf="@+id/titleLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.034"
+        app:layout_constraintStart_toEndOf="@+id/titleLabel"
+        app:layout_constraintTop_toTopOf="@+id/titleLabel"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <EditText
+        android:id="@+id/releaseDateEdit"
+        android:layout_width="209dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="36dp"
+        android:ems="10"
+        android:inputType="date"
+        android:autofillHints="Game Release Date"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/releaseDateLabel"
+        app:layout_constraintStart_toStartOf="@+id/titleEdit"
+        app:layout_constraintTop_toTopOf="@+id/releaseDateLabel"
+        app:layout_constraintVertical_bias="0.272" />
+
+    <EditText
+        android:id="@+id/developerEdit"
+        android:layout_width="209dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:autofillHints="Game Developer"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/developerLabel"
+        app:layout_constraintStart_toStartOf="@+id/titleEdit"
+        app:layout_constraintTop_toTopOf="@+id/developerLabel" />
+
+    <EditText
+        android:id="@+id/publisherEdit"
+        android:layout_width="209dp"
+        android:layout_height="48dp"
+        android:ems="10"
+        android:inputType="text"
+        android:autofillHints="Game Publisher"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/publisherLabel"
+        app:layout_constraintStart_toStartOf="@+id/developerEdit"
+        app:layout_constraintTop_toTopOf="@+id/publisherLabel" />
+
+    <EditText
+        android:id="@+id/descriptionEdit"
+        android:layout_width="367dp"
+        android:layout_height="159dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:autofillHints="Game Description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/descriptionLabel" />
+
+    <Spinner
+        android:id="@+id/platformCombo"
+        android:layout_width="122dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/platformLabel"
+        app:layout_constraintStart_toStartOf="@+id/publisherEdit"
+        app:layout_constraintTop_toTopOf="@+id/platformLabel" />
+
+    <Spinner
+        android:id="@+id/statusCombo"
+        android:layout_width="122dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
+        app:layout_constraintStart_toStartOf="@+id/platformCombo"
+        app:layout_constraintTop_toTopOf="@+id/statusLabel" />
+
+    <ImageView
+        android:id="@+id/kiti"
+        android:layout_width="78dp"
+        android:layout_height="82dp"
+        android:contentDescription="@string/cat"
+        app:layout_constraintBottom_toBottomOf="@+id/statusCombo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintStart_toEndOf="@+id/statusCombo"
+        app:layout_constraintTop_toBottomOf="@+id/publisherEdit"
+        app:layout_constraintVertical_bias="0.756"
+        app:srcCompat="@drawable/kitty" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
