@@ -1,6 +1,6 @@
 <resources>
     <!-- main menu -->
-    <string name="app_name">Game</string>
+    <string name="app_name">Game Collection</string>
     <string name="AddButton">Add Game</string>
     <string name="noGames">You have no games :(</string>
     <string name="titleDisplay">%1$s (%2$s)</string>

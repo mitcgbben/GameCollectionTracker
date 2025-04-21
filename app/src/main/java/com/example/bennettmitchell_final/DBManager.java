@@ -5,9 +5,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +60,69 @@ public class DBManager {
 
     // insert a game object //
     public long insertGame(Game g){
-        return insertGame(g.getTitle(), g.getReleaseDate(), g.getBoxArt(), g.getDeveloper(), g.getPublisher(), g.getDescription(), g.getUserNotes(), g.getGameStatus(), g.getPlatformID());
+        byte[] boxArt = g.getBoxArt();
+        return insertGame(g.getTitle(), g.getReleaseDate(), boxArt, g.getDeveloper(), g.getPublisher(), g.getDescription(), g.getUserNotes(), g.getGameStatus(), g.getPlatformID());
+    }
+
+
+
+    public long updateGame(Game g){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Database.GamesTable.CN_TITLE, g.getTitle());
+        values.put(Database.GamesTable.CN_RELEASE, g.getTitle());
+        values.put(Database.GamesTable.CN_DEV, g.getDeveloper());
+        values.put(Database.GamesTable.CN_PUB, g.getPublisher());
+        values.put(Database.GamesTable.CN_DESC, g.getDescription());
+        values.put(Database.GamesTable.CN_STATUSID, g.getGameStatus());
+        values.put(Database.GamesTable.CN_PLATFORMID, g.getPlatformID());
+        values.put(Database.GamesTable.CN_BOXART, g.getBoxArt());
+
+
+
+        String selection = Database.GamesTable._ID + " LIKE ?";
+        String[] args = {Integer.toString(g.getGameID())};
+
+        return db.update(Database.GamesTable.TABLE_NAME, values, selection, args);
+    }
+    // TODO : udpate status or user notes
+    public long updateGameShort(){
+        return 1;
+    }
+    // get one specific game
+    public Game getGame(int gameID){
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String[] cols = null;
+        String selection = Database.GamesTable._ID + " LIKE ?";
+        String[] args = {Integer.toString(gameID)};
+
+        Cursor cursor = db.query(Database.GamesTable.TABLE_NAME, cols, selection, args, null, null, null);
+
+        Game game;
+        // check to see if there is a result
+        if (cursor.moveToNext()){
+            String title = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_TITLE));
+            String releaseDate = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_RELEASE));
+            byte[] boxArt = cursor.getBlob(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_BOXART));
+            String developer = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_DEV));
+            String publisher = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PUB));
+            String description = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_DESC));
+            String notes = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_USERNOTES));
+            int status = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_STATUSID));
+            int platform = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PLATFORMID));
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable._ID));
+//            Log.d("Database", Integer.toString(id));
+
+
+            game = new Game(title, releaseDate, boxArt, developer, publisher, description, notes, status, platform, id);
+        }
+        else{
+            game = null;
+        }
+        cursor.close();
+        return game;
     }
 
 
@@ -122,5 +188,8 @@ public class DBManager {
      public void reset(){
          SQLiteDatabase db = dbHelper.getReadableDatabase();
          dbHelper.onCreate(db);
+     }
+     public void close(){
+        dbHelper.close();
      }
 }

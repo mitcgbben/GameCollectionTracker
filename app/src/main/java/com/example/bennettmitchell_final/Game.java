@@ -3,11 +3,15 @@ package com.example.bennettmitchell_final;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -22,6 +26,7 @@ public class Game implements Parcelable {
     private String title;
     private String releaseDate;
     private byte[] boxArt;
+//    private Bitmap boxArtDisplay;
     private String developer;
     private String publisher;
     private String description;
@@ -124,9 +129,28 @@ public class Game implements Parcelable {
     }
 
 
+    // Converts from bitmap to byte array
+    private byte[] convertBitmap(Bitmap img){
+        if (img != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            img.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+            byte[] byteArray = stream.toByteArray();
+            return byteArray;
+        }
+        else return null;
+    }
+    // Converts from byte array to bitmap
+    private Bitmap convertBitmap(byte[] img){
+        if (img != null) {
+            Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
+            return bitmap;
+        }
+        else return null;
+    }
 
-
-
+    public Bitmap getBoxArtDisplay(){
+        return convertBitmap(getBoxArt());
+    }
     public String getYear(){
         String[] dateArray = releaseDate.split("/");
         try{
@@ -142,7 +166,7 @@ public class Game implements Parcelable {
     public String getReleaseDate() {return releaseDate;}
     public void setReleaseDate(String releaseDate) {this.releaseDate = releaseDate;}
     public byte[] getBoxArt() {return boxArt;}
-    public void setBoxArt(byte[] boxArtLink) {this.boxArt = boxArtLink;}
+    public void setBoxArt(byte[] boxArt) {this.boxArt = boxArt;}
     public String getDeveloper() {return developer;}
     public void setDeveloper(String developer) {this.developer = developer;}
     public String getPublisher() {return publisher;}
@@ -157,4 +181,6 @@ public class Game implements Parcelable {
     public void setPlatformID(int platformID) {this.platformID = platformID;}
     public int getGameID(){return gameID;}
     public void setGameID(int gameID){this.gameID = gameID;}
+//    public Drawable getBoxArtDisplay(){return boxArtDisplay;}
+//    public void setBoxArtDisplay(Drawable d){this.boxArtDisplay = d;}
 }

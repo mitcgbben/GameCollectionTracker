@@ -3,6 +3,7 @@ package com.example.bennettmitchell_final;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +30,7 @@ public class GameDetails extends AppCompatActivity {
     private ImageView boxArt;
     private ImageView platformLogo;
     private Spinner statusCombo;
-    private ScrollView description;
+    private TextView description;
     private EditText userNotes;
 
     @Override
@@ -62,8 +63,10 @@ public class GameDetails extends AppCompatActivity {
         developer.setText(String.format(getString(R.string.developer), game.getDeveloper()));
         publisher.setText(String.format(getString(R.string.publisher), game.getPublisher()));
         userNotes.setText(game.getUserNotes());
+        description.setText(game.getDescription());
+        description.setMovementMethod(new ScrollingMovementMethod());
 //        userNotes.setText(game.getGameID() + " ");
-//        boxArt.setImageDrawable(game.getImageFromWeb(this));
+        boxArt.setImageBitmap(game.getBoxArtDisplay());
 
 
 
@@ -100,5 +103,21 @@ public class GameDetails extends AppCompatActivity {
             this.finish();
         }
         return true;
+    }
+    @Override
+    protected void onRestart(){
+        // on page restart, reload the same page
+        super.onRestart();
+
+        Intent intent = getIntent();
+        intent.putExtra("Game", dbMan.getGame(game.getGameID()));
+        finish();
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        dbMan.close();
     }
 }

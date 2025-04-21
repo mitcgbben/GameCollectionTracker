@@ -1,5 +1,7 @@
 package com.example.bennettmitchell_final;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +38,7 @@ public class GameForm extends AppCompatActivity {
         setContentView(R.layout.game_form);
 
         importedGame = null;
+        dbMan = new DBManager(this);
         // :3
         topLabel = findViewById(R.id.topLabel);
         titleEdit = findViewById(R.id.titleEdit);
@@ -65,11 +68,12 @@ public class GameForm extends AppCompatActivity {
                 topLabel.setText(R.string.addGameLabel);
             }
 
-            // get the game information
+            // autofill the game information
             titleEdit.setText(importedGame.getTitle());
             releaseDateEdit.setText(importedGame.getReleaseDate());
             developerEdit.setText(importedGame.getDeveloper());
             publisherEdit.setText(importedGame.getPublisher());
+            descriptionEdit.setText(importedGame.getDescription());
             // TODO : Set the combo boxes
 
         }
@@ -85,8 +89,18 @@ public class GameForm extends AppCompatActivity {
         submitButton.setOnClickListener((View v) ->{
             // TODO : Validate data and then add to database
             try{
-                throw(new RuntimeException("hi"));
-
+                Game newGame = buildGame();
+                if (!action){
+                    // Add game
+                    dbMan.insertGame(newGame);
+                    Toast.makeText(this, "Game added Successfully", Toast.LENGTH_LONG).show();
+                    this.finish();
+                }
+                else{
+                    dbMan.updateGame(newGame);
+                    Toast.makeText(this, "Game edited Successfully", Toast.LENGTH_SHORT).show();
+                    this.finish();
+                }
 
             }
             catch (Exception e){
@@ -115,8 +129,14 @@ public class GameForm extends AppCompatActivity {
             boxArt = importedGame.getBoxArt();
             gameID = importedGame.getGameID();
         }
-
+//        boxArt = BitmapFactory.decodeResource(getResources(), R.drawable.dog);
         Game tempGame = new Game(title, releaseDate, boxArt, developer, publisher, description, userNotes, statusID, platformID, gameID);
         return tempGame;
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        dbMan.close();
     }
 }

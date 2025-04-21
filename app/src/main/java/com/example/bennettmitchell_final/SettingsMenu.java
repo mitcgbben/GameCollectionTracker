@@ -24,7 +24,7 @@ public class SettingsMenu extends DialogFragment {
 
         Button puyo = dialogView.findViewById(R.id.puyo);
         puyo.setOnClickListener((View v) -> {
-            dbMan.reset();
+            //dbMan.reset();
         });
 
 

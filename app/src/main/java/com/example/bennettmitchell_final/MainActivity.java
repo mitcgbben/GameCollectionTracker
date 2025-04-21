@@ -125,4 +125,9 @@ public class MainActivity extends AppCompatActivity {
             noGames.setText("");
         }
     }
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        dbMan.close();
+    }
 }

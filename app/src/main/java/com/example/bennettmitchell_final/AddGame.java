@@ -8,7 +8,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AddGame extends AppCompatActivity {
     private TextView screenLabel;
@@ -17,6 +21,9 @@ public class AddGame extends AppCompatActivity {
     private RecyclerView gameList;
     private Button blankTemplateButton;
     private Button backButton;
+
+    private GameListAdapter adapter;
+    private List<Game> games;
 
     @Override
     protected void onCreate(Bundle SavedInstanceState){
@@ -29,7 +36,18 @@ public class AddGame extends AppCompatActivity {
         searchBar = findViewById(R.id.searchBar);
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener((View v) -> {
-            // TODO search
+            // api call to IGDB //
+            String query = searchBar.getText().toString();
+
+            games = new ArrayList<>();
+            games.add(new Game("plink"));
+            games.add(new Game("Puyo Puyo"));
+            games.add(new Game("Amogus"));
+
+            // put the games onto the screen
+            adapter = new GameListAdapter(games, this, GameListAdapter.Destinations.GAMEFORM);
+            gameList.setLayoutManager(new LinearLayoutManager(this));
+            gameList.setAdapter(adapter);
         });
 
         gameList = findViewById(R.id.resultList);
@@ -37,8 +55,8 @@ public class AddGame extends AppCompatActivity {
         blankTemplateButton = findViewById(R.id.blankTemplateButton);
         blankTemplateButton.setOnClickListener((View v) -> {
             Intent form = new Intent(this, GameForm.class);
-
             startActivity(form);
+
         });
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener((View v) -> {
