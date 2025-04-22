@@ -11,11 +11,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 public class SettingsMenu extends DialogFragment {
-    private DBManager dbMan;
+//    private DBManager dbMan;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        dbMan = new DBManager(getContext());
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflation = getActivity().getLayoutInflater();

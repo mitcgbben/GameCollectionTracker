@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dbMan = new DBManager(this);
+        DBManager.initDB(this);
 //        games = new ArrayList<>();
         // test games //
         /*
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showGames(){
-        games = dbMan.getGames();
+        games = DBManager.getGames();
         // there are definately better ways to do this
         // this is like the first thing to optimize
         //
@@ -128,6 +128,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        dbMan.close();
+        DBManager.close();
     }
 }

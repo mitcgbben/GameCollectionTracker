@@ -17,20 +17,30 @@ import java.util.List;
 
 public class DBManager {
     private Context context;
-    private DBHelper dbHelper;
+    private static DBHelper dbHelper;
     private static final String NOINFO = "INFORMATION NOT PROVIDED";
+
+    private static SQLiteDatabase writeableDB;
+    private static SQLiteDatabase readableDB;
     // define these important aspects to interact with the database
+    /*
     public DBManager(Context context){
         this.context = context;
         this.dbHelper = new DBHelper(context);
     }
+    */
+    public static void initDB(Context context){
+        dbHelper = new DBHelper(context);
+        writeableDB = dbHelper.getWritableDatabase();
+        readableDB = dbHelper.getReadableDatabase();
+    }
 
     //  its as shrimple as that
-    public long insertGame(String title, String releaseDate, byte[] boxArt, String developer,
+    public static long insertGame(String title, String releaseDate, byte[] boxArt, String developer,
                            String publisher, String description, String userNotes,
                            int gameStatus, int platformID){
         // database in write mode
-       SQLiteDatabase db = dbHelper.getWritableDatabase();
+//       SQLiteDatabase db = dbHelper.getWritableDatabase();
 
        // TODO FORMAT DATES
         String releaseDateF = "1/1/2000";
@@ -48,26 +58,24 @@ public class DBManager {
         values.put(Database.GamesTable.CN_PLATFORMID, platformID);
 
         // inserts the new row and returns the new row id
-        long newRow = db.insert(Database.GamesTable.TABLE_NAME, null, values); // first time using a long lmao
-        db.close(); // close to not use too much data
+        long newRow = writeableDB.insert(Database.GamesTable.TABLE_NAME, null, values); // first time using a long lmao
         return newRow;
     }
 
     // just insert the game name for testing
-    public long insertGame(String title){
+    public static long insertGame(String title){
         return insertGame(title, "", null, NOINFO, NOINFO, NOINFO, NOINFO, 0, 0);
     } // cat thumbs up emoji
 
     // insert a game object //
-    public long insertGame(Game g){
+    public static long insertGame(Game g){
         byte[] boxArt = g.getBoxArt();
         return insertGame(g.getTitle(), g.getReleaseDate(), boxArt, g.getDeveloper(), g.getPublisher(), g.getDescription(), g.getUserNotes(), g.getGameStatus(), g.getPlatformID());
     }
 
 
 
-    public long updateGame(Game g){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+    public static long updateGame(Game g){
 
         ContentValues values = new ContentValues();
         values.put(Database.GamesTable.CN_TITLE, g.getTitle());
@@ -84,21 +92,21 @@ public class DBManager {
         String selection = Database.GamesTable._ID + " LIKE ?";
         String[] args = {Integer.toString(g.getGameID())};
 
-        return db.update(Database.GamesTable.TABLE_NAME, values, selection, args);
+        return writeableDB.update(Database.GamesTable.TABLE_NAME, values, selection, args);
     }
     // TODO : udpate status or user notes
-    public long updateGameShort(){
+    public static long updateGameShort(){
         return 1;
     }
     // get one specific game
-    public Game getGame(int gameID){
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    public static Game getGame(int gameID){
+//        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String[] cols = null;
         String selection = Database.GamesTable._ID + " LIKE ?";
         String[] args = {Integer.toString(gameID)};
 
-        Cursor cursor = db.query(Database.GamesTable.TABLE_NAME, cols, selection, args, null, null, null);
+        Cursor cursor = readableDB.query(Database.GamesTable.TABLE_NAME, cols, selection, args, null, null, null);
 
         Game game;
         // check to see if there is a result
@@ -126,12 +134,12 @@ public class DBManager {
     }
 
 
-    public List<Game> getGames(){
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    public static List<Game> getGames(){
+//        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selection = null;
         //String[]
         // SELECT * FROM Games; essentially
-        Cursor cursor = db.query(Database.GamesTable.TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor = readableDB.query(Database.GamesTable.TABLE_NAME, null, null, null, null, null, null);
         ArrayList<Game> games = new ArrayList<>();
 
         // loop through the
@@ -159,13 +167,13 @@ public class DBManager {
                 // query is: table to query, columns to return (null is *), columns for where clause, values for where clause, dont group rows, dont filter by row groups, sort order
     }
 
-    public int deleteGame(int gameID){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+    public static int deleteGame(int gameID){
+//        SQLiteDatabase db = dbHelper.getWritableDatabase();
         String selection = Database.GamesTable._ID + " LIKE ?";
         String[] selectArg = {Integer.toString(gameID)};
-        int deletedRows = db.delete(Database.GamesTable.TABLE_NAME, selection, selectArg);
+        int deletedRows = writeableDB.delete(Database.GamesTable.TABLE_NAME, selection, selectArg);
         Log.i("Database", gameID + " Deleted items: " + deletedRows);
-        db.close();
+//        db.close();
         return deletedRows;
     }
 
@@ -185,11 +193,11 @@ public class DBManager {
          cursor.close();
      }
 
-     public void reset(){
+     public static void reset(){
          SQLiteDatabase db = dbHelper.getReadableDatabase();
          dbHelper.onCreate(db);
      }
-     public void close(){
+     public static void close(){
         dbHelper.close();
      }
 }

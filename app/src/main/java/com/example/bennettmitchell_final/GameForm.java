@@ -27,7 +27,7 @@ public class GameForm extends AppCompatActivity {
     private Button backButton;
     private Button submitButton;
 
-    private DBManager dbMan;
+//    private DBManager dbMan;
 
     private boolean action = false;
     private Game importedGame;
@@ -38,7 +38,7 @@ public class GameForm extends AppCompatActivity {
         setContentView(R.layout.game_form);
 
         importedGame = null;
-        dbMan = new DBManager(this);
+//        dbMan = new DBManager(this);
         // :3
         topLabel = findViewById(R.id.topLabel);
         titleEdit = findViewById(R.id.titleEdit);
@@ -92,12 +92,12 @@ public class GameForm extends AppCompatActivity {
                 Game newGame = buildGame();
                 if (!action){
                     // Add game
-                    dbMan.insertGame(newGame);
+                    DBManager.insertGame(newGame);
                     Toast.makeText(this, "Game added Successfully", Toast.LENGTH_LONG).show();
                     this.finish();
                 }
                 else{
-                    dbMan.updateGame(newGame);
+                    DBManager.updateGame(newGame);
                     Toast.makeText(this, "Game edited Successfully", Toast.LENGTH_SHORT).show();
                     this.finish();
                 }
@@ -137,6 +137,6 @@ public class GameForm extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        dbMan.close();
+//        DBManager.close();
     }
 }

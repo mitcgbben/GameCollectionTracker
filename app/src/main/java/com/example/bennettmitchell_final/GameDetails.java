@@ -22,7 +22,7 @@ public class GameDetails extends AppCompatActivity {
     private Button backButton;
 
     private Game game;
-    private DBManager dbMan;
+//    private DBManager dbMan;
 
     private TextView title;
     private TextView developer;
@@ -38,7 +38,7 @@ public class GameDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_details);
         Log.i("plink", "Got to Game Details");
-        dbMan = new DBManager(this);
+        // ! Do i need to change the context?
 
         // get game from extras
 
@@ -95,7 +95,7 @@ public class GameDetails extends AppCompatActivity {
             startActivity(gameForm);
         }
         else if (id == R.id.delete){
-            dbMan.deleteGame(game.getGameID());
+            DBManager.deleteGame(game.getGameID());
             Log.i("plink", "Delete Game Clicked for " + game.getTitle());
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra("Action", "Delete");
@@ -110,7 +110,7 @@ public class GameDetails extends AppCompatActivity {
         super.onRestart();
 
         Intent intent = getIntent();
-        intent.putExtra("Game", dbMan.getGame(game.getGameID()));
+        intent.putExtra("Game", DBManager.getGame(game.getGameID()));
         finish();
         startActivity(intent);
     }
@@ -118,6 +118,6 @@ public class GameDetails extends AppCompatActivity {
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        dbMan.close();
+        //DBManager.close();
     }
 }
