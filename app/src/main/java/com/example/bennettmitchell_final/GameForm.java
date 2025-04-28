@@ -31,6 +31,7 @@ public class GameForm extends AppCompatActivity {
 
     private boolean action = false;
     private Game importedGame;
+    private byte[] importedBoxArt = null;
 
     @Override
     protected void onCreate(Bundle SavedInstanceState){
@@ -75,6 +76,8 @@ public class GameForm extends AppCompatActivity {
             publisherEdit.setText(importedGame.getPublisher());
             descriptionEdit.setText(importedGame.getDescription());
             // TODO : Set the combo boxes
+
+            importedBoxArt = importedGame.getBoxArt();
 
         }
         else{
@@ -121,16 +124,17 @@ public class GameForm extends AppCompatActivity {
         int platformID = platformCombo.getSelectedItemPosition();
 
         String userNotes = "";
-        byte[] boxArt = null;
+//        byte[] boxArt = null;
         int gameID = 0;
 
         if (action){
             userNotes = importedGame.getUserNotes();
-            boxArt = importedGame.getBoxArt();
+            importedBoxArt = importedGame.getBoxArt();
             gameID = importedGame.getGameID();
+//            boxArt = importedGame.getBoxArt();
         }
 //        boxArt = BitmapFactory.decodeResource(getResources(), R.drawable.dog);
-        Game tempGame = new Game(title, releaseDate, boxArt, developer, publisher, description, userNotes, statusID, platformID, gameID);
+        Game tempGame = new Game(title, releaseDate, importedBoxArt, developer, publisher, description, userNotes, statusID, platformID, gameID);
         return tempGame;
     }
 

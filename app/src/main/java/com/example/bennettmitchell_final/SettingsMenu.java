@@ -24,8 +24,10 @@ public class SettingsMenu extends DialogFragment {
 
         Button puyo = dialogView.findViewById(R.id.puyo);
         puyo.setOnClickListener((View v) -> {
-            //dbMan.reset();
+            APICaller.test();
         });
+        Button authTest = dialogView.findViewById(R.id.authTest);
+        authTest.setOnClickListener((View v) -> APICaller.searchAPI("among us"));
 
 
         builder.setView(dialogView);

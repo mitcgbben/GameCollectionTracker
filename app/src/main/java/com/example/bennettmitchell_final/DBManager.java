@@ -10,6 +10,8 @@ import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import org.jetbrains.annotations.TestOnly;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -138,8 +140,9 @@ public class DBManager {
 //        SQLiteDatabase db = dbHelper.getReadableDatabase();
         String selection = null;
         //String[]
+        String sortOrder = Database.GamesTable.CN_TITLE + " ASC";
         // SELECT * FROM Games; essentially
-        Cursor cursor = readableDB.query(Database.GamesTable.TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor = readableDB.query(Database.GamesTable.TABLE_NAME, null, null, null, null, null, sortOrder);
         ArrayList<Game> games = new ArrayList<>();
 
         // loop through the
@@ -178,6 +181,7 @@ public class DBManager {
     }
 
     // test
+    @TestOnly
      private void listTables(){
          SQLiteDatabase db = dbHelper.getReadableDatabase();
          String selection = "type = ?";

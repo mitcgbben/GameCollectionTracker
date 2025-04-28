@@ -40,6 +40,12 @@ public class AddGame extends AppCompatActivity {
             String query = searchBar.getText().toString();
 
             games = new ArrayList<>();
+            Game imgTest = new Game("Capybara");
+            imgTest.setBoxArt(APICaller.getImageFromWeb(this, "https://oldschool.runescape.wiki/images/thumb/Capybara.png/800px-Capybara.png?5cf43"));
+            games.add(imgTest);
+            imgTest = new Game("meowmroweprm");
+            imgTest.setBoxArt(APICaller.getImageFromWeb(this, "https://preview.redd.it/please-give-us-a-capybara-pet-v0-mysxaaq2tvpc1.png?auto=webp&s=7e194d38558abd1b5ad972705e2f7bcc10c11a26"));
+            games.add(imgTest);
             games.add(new Game("plink"));
             games.add(new Game("Puyo Puyo"));
             games.add(new Game("Amogus"));

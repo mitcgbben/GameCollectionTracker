@@ -109,23 +109,9 @@ public class Game implements Parcelable {
     // TODO: This currently does not work and requires running in background
     // NetworkOnMainThreadException
 
-    // takes a context to pull from resources
-    public Drawable getImageFromWeb(Context context, String url){
-        if (url != null) {
-            try {
-                InputStream inputStream = (InputStream) new URL(url).getContent();
-                Drawable draw = Drawable.createFromStream(inputStream, "Box Art");
-                return draw;
-            } catch (MalformedURLException e) {
-                Log.e("Image Error", "Malformed URL");
-            } catch (IOException e) {
-                Log.e("Image Error", "IO Exception");
-            } catch (Exception e) {
-                Log.e("Image Error", e.toString());
-            }
-        }
-        // return this if something goes wrong so its not nothing that displays
-        return AppCompatResources.getDrawable(context, R.drawable.ic_launcher_background);
+    // allow to set image to bitmap
+    public void setBoxArt(Bitmap bitmap){
+        this.setBoxArt(convertBitmap(bitmap));
     }
 
 
@@ -133,7 +119,7 @@ public class Game implements Parcelable {
     private byte[] convertBitmap(Bitmap img){
         if (img != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            img.compress(Bitmap.CompressFormat.JPEG, 0, stream);
+            img.compress(Bitmap.CompressFormat.JPEG, 50, stream);
             byte[] byteArray = stream.toByteArray();
             return byteArray;
         }
