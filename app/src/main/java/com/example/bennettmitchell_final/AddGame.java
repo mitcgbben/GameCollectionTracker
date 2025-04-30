@@ -2,6 +2,7 @@ package com.example.bennettmitchell_final;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ public class AddGame extends AppCompatActivity {
     private RecyclerView gameList;
     private Button blankTemplateButton;
     private Button backButton;
+    private TextView errorField;
 
     private GameListAdapter adapter;
     private List<Game> games;
@@ -34,11 +36,19 @@ public class AddGame extends AppCompatActivity {
 
         // search //
         searchBar = findViewById(R.id.searchBar);
+        errorField = findViewById(R.id.errorMessage);
+
         searchButton = findViewById(R.id.searchButton);
         searchButton.setOnClickListener((View v) -> {
             // api call to IGDB //
-            String query = searchBar.getText().toString();
+            try {
+                String query = searchBar.getText().toString();
+//                Log.i("plink", query);
 
+                if (!query.isEmpty()) {
+                    games = APICaller.searchAPI(query);
+                    errorField.setText("");
+            /*
             games = new ArrayList<>();
             Game imgTest = new Game("Capybara");
             imgTest.setBoxArt(APICaller.getImageFromWeb(this, "https://oldschool.runescape.wiki/images/thumb/Capybara.png/800px-Capybara.png?5cf43"));
@@ -49,11 +59,29 @@ public class AddGame extends AppCompatActivity {
             games.add(new Game("plink"));
             games.add(new Game("Puyo Puyo"));
             games.add(new Game("Amogus"));
+             */
 
-            // put the games onto the screen
-            adapter = new GameListAdapter(games, this, GameListAdapter.Destinations.GAMEFORM);
-            gameList.setLayoutManager(new LinearLayoutManager(this));
-            gameList.setAdapter(adapter);
+                    if (games != null) {
+                        // put the games onto the screen
+                        adapter = new GameListAdapter(games, this, GameListAdapter.Destinations.GAMEFORM);
+                        gameList.setLayoutManager(new LinearLayoutManager(this));
+                        gameList.setAdapter(adapter);
+                        if (games.isEmpty()){
+                            errorField.setText(R.string.noGamesFound);
+                        }
+
+                    }
+                    else{
+                        errorField.setText(R.string.nullList);
+                    }
+                }
+                else{
+                    errorField.setText(R.string.entryError);
+                }
+            }
+            catch (APICaller.ConnectionException e){
+                errorField.setText(R.string.connectionError);
+            }
         });
 
         gameList = findViewById(R.id.resultList);

@@ -35,6 +35,11 @@
     <string name="or">or!</string>
     <string name="blankTemplateButton">Use a blank template!</string>
 
+    <string name="connectionError">Could not connect to servers. Try again later.</string>
+    <string name="entryError">Please enter a game title.</string>
+    <string name="noGamesFound">No games were found.</string>
+    <string name="nullList">List is null</string>
+
     <!-- Game Form -->
     <string name="editGameLabel">Edit Game</string>
     <string name="titleLabel">Title:</string>

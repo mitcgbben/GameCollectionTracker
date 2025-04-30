@@ -22,7 +22,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,19 +40,32 @@ public class APICaller {
         GET,
         POST,
     }
-
+    // i made a new exception plink
+    public static class ConnectionException extends Exception{
+        private String error;
+        public ConnectionException(String error) {
+            this.error = error;
+        }
+        @Override
+        public String toString(){
+            return error;
+        }
+    }
     // anonymous function :D
 
     private static Runnable other = () -> {Log.i("API", "test");};
 
     // crying about these being public in the code i tried to put them in the apps environment
-    private static String clientID = "[REMOVED]";
-    private static String clientSecret = "[REMOVED]";
+    private static String clientID = "dk7y9m5rzgwaombcvdt6zs2cnkkrza";
+    private static String clientSecret = "jdlpi7y6rgicfaf9jzahktfakh7wnc";
     private static String auth = null;
+    private static String imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_small/";
 
-    private static String query = "fields name,summary,involved_companies,platforms,cover,first_release_date; search \"&\"; limit 10; where version_parent = null;";
 
-    private static void authTwitch(){
+    private static String query = "fields name,summary,involved_companies,platforms,cover.image_id,first_release_date; search \"&\"; limit 20; where parent_game = null;";
+
+    private static void authTwitch() throws ConnectionException {authTwitch(10);}
+    private static void authTwitch(int maxAttempts) throws ConnectionException{
         ExecutorService exe = Executors.newSingleThreadExecutor();
 
         String url = "https://id.twitch.tv/oauth2/token?"; // base url
@@ -62,9 +78,13 @@ public class APICaller {
                 auth = authJson.getString("access_token");
             }
             else{
-                Log.d("API", "Could not auth twitch, retrying");
-                authTwitch(); // omg funny recursion
-                //  itll work eventually
+                if (maxAttempts > 0) {
+                    Log.d("API", "Could not auth twitch, retrying");
+                    authTwitch(maxAttempts - 1); // omg funny recursion
+                }
+                else{
+                    throw new ConnectionException("Could not connect to twitch");
+                }
             }
         }
         catch (JSONException e){
@@ -72,7 +92,7 @@ public class APICaller {
         }
     }
 
-    public static void searchAPI(String search){
+    public static List<Game> searchAPI(String search) throws ConnectionException{
         // check if the twitch connection is already there
         if (auth == null){
             authTwitch();
@@ -87,10 +107,54 @@ public class APICaller {
         JSONArray games = callAPIArray(url, methods.POST, headers, body);
         if (games != null) {
             try {
-                Log.i("API", games.get(3).toString());
+                return getGames(games);
             }
-            catch (JSONException e){}
+            catch (JSONException e){
+                Log.e("API", e.toString());
+                return null;
+            }
         }
+        return null;
+    }
+
+    private static List<Game> getGames(JSONArray gameList) throws JSONException{
+        ArrayList<Game> games = new ArrayList<>();
+        // iterate through all the found games
+        for (int i = 0; i < gameList.length(); i++){
+//            Log.i("API", Integer.toString(i));
+            JSONObject gameJson = gameList.optJSONObject(i); // opt so it doesnt throw an error if a field isnt there
+            if (gameJson != null) {
+                String name = gameJson.optString("name");
+                String description = gameJson.optString("summary");
+                int releaseDate = gameJson.optInt("first_release_date");
+                JSONArray companies = gameJson.optJSONArray("involved_companies");
+                JSONArray platforms = gameJson.optJSONArray("platforms");
+
+                Date plink = new Date(releaseDate);
+//                Log.d("API", Integer.toString(releaseDate));
+                String releaseDateS = "";
+                String publisher = "";
+                Game newGame = new Game(name, releaseDateS, null, null, publisher, description, "", 0, 0, 0);
+//                int cover = gameJson.optInt("cover");
+                JSONObject cover = gameJson.optJSONObject("cover");
+                if (cover != null){
+                    String id = cover.optString("image_id");
+                    if (!id.isEmpty()){
+                        String url = imageURL + id + ".jpg";
+                        Log.d("API", url);
+                        newGame.setBoxArt(APICaller.getImageFromWeb(url));
+                    }
+                    else{
+                        Log.d("API","id was empty");
+                    }
+                }
+
+
+
+                games.add(newGame);
+            }
+        }
+        return games;
     }
     private static JSONObject callAPI(String sUrl, methods method){return callAPI(sUrl, method, null, null);}
 
@@ -218,7 +282,7 @@ public class APICaller {
     }
 
     // takes a context to pull from resources
-    public static Bitmap getImageFromWeb(Context context, String url){
+    public static Bitmap getImageFromWeb(String url){
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<Bitmap> future = executor.submit(new Callable<Bitmap>() {
             @Override
@@ -237,9 +301,7 @@ public class APICaller {
                         Log.e("Image Error", e.toString());
                     }
                 }
-
-                // return this if something goes wrong so its not nothing that displays
-                return BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher_background); //AppCompatResources.getDrawable(context, R.drawable.ic_launcher_background);
+                return null;
             }
         });
         try{

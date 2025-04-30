@@ -88,4 +88,14 @@
         app:layout_constraintEnd_toEndOf="@+id/blankTemplateButton"
         app:layout_constraintStart_toStartOf="@+id/blankTemplateButton"
         app:layout_constraintTop_toBottomOf="@+id/blankTemplateButton" />
+
+    <TextView
+        android:id="@+id/errorMessage"
+        android:layout_width="279dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="12dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

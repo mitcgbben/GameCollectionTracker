@@ -2,6 +2,7 @@ package com.example.bennettmitchell_final;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -27,7 +28,14 @@ public class SettingsMenu extends DialogFragment {
             APICaller.test();
         });
         Button authTest = dialogView.findViewById(R.id.authTest);
-        authTest.setOnClickListener((View v) -> APICaller.searchAPI("among us"));
+        authTest.setOnClickListener((View v) -> {
+            try {
+                APICaller.searchAPI("among us");
+            }
+            catch (APICaller.ConnectionException e){
+                Log.e("API", e.toString());
+            }
+        });
 
 
         builder.setView(dialogView);
