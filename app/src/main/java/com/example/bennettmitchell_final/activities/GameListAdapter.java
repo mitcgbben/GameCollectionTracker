@@ -98,11 +98,16 @@ public class GameListAdapter extends RecyclerView.Adapter<GameListAdapter.GameVi
         viewHolder.getTitleLabel().setText(titleText);
         viewHolder.getBoxArt().setImageBitmap(gameItem.getBoxArtDisplay());
 
+
         // do not show the icons if showing from add game
         // TODO : show platform and status icons
         if (destination == Destinations.GAMEFORM){
             viewHolder.getPlatformIcon().setImageDrawable(null);
             viewHolder.getStatusIcon().setImageDrawable(null);
+        }
+        else if (destination == Destinations.DETAILS){
+            viewHolder.getPlatformIcon().setImageBitmap(gameItem.getPlatform().getDisplayIcon());
+            viewHolder.getStatusIcon().setImageBitmap(gameItem.getGameStatus().getDisplayIcon());
         }
 //        viewHolder.getBoxArt().setImageDrawable(gameItem.getImageFromWeb(viewHolder.itemView.getContext()));
     }

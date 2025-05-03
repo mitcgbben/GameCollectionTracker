@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.example.bennettmitchell_final.Game;
+import com.example.bennettmitchell_final.Status;
 
 import org.jetbrains.annotations.TestOnly;
 import org.json.JSONArray;
@@ -129,7 +130,7 @@ public class APICaller {
 //                Log.d("API", Integer.toString(releaseDate));
                 String releaseDateS = "";
                 String publisher = "";
-                Game newGame = new Game(name, releaseDateS, null, null, publisher, description, "", null, null, 0);
+                Game newGame = new Game(name, releaseDateS, null, null, publisher, description, "", new Status(), new Status(), 0);
 //                int cover = gameJson.optInt("cover");
                 JSONObject cover = gameJson.optJSONObject("cover");
                 if (cover != null){

@@ -22,7 +22,7 @@ public class ImageHandler {
     public static byte[] convertBitmap(Bitmap img){
         if (img != null) {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            img.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+            img.compress(Bitmap.CompressFormat.PNG, 50, stream);
             byte[] byteArray = stream.toByteArray();
             return byteArray;
         }

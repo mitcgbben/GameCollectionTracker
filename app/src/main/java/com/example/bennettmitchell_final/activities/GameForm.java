@@ -61,8 +61,10 @@ public class GameForm extends AppCompatActivity{
         releaseDateEdit = findViewById(R.id.releaseDateEdit);
         developerEdit = findViewById(R.id.developerEdit);
         publisherEdit = findViewById(R.id.publisherEdit);
+
         statusCombo = findViewById(R.id.statusCombo);
         platformCombo = findViewById(R.id.platformCombo);
+
         descriptionEdit = findViewById(R.id.descriptionEdit);
 
         backButton = findViewById(R.id.backButton);
@@ -71,10 +73,12 @@ public class GameForm extends AppCompatActivity{
         // fill status and platform spinners
         statuses = (ArrayList<GameID>) DBManager.getGameIDs(Database.Tables.STATUSES);
         statusAdapter = new SpinnerAdapter(this, statuses);
+
         platforms = (ArrayList<GameID>) DBManager.getGameIDs(Database.Tables.PLATFORMS);
         platformAdapter = new SpinnerAdapter(this, platforms);
 
         statusCombo.setAdapter(statusAdapter);
+
         platformCombo.setAdapter(platformAdapter);
 
 
@@ -112,7 +116,7 @@ public class GameForm extends AppCompatActivity{
             developerEdit.setText(importedGame.getDeveloper());
             publisherEdit.setText(importedGame.getPublisher());
             descriptionEdit.setText(importedGame.getDescription());
-            // TODO : Set the combo boxes
+
 
             importedBoxArt = importedGame.getBoxArt();
 
@@ -161,6 +165,8 @@ public class GameForm extends AppCompatActivity{
         String description = descriptionEdit.getText().toString();
         Status status = (Status) statuses.get(statusCombo.getSelectedItemPosition());
         Status platform = (Status) platforms.get(platformCombo.getSelectedItemPosition());
+        Log.i("Database", platformCombo.getSelectedItemPosition() + " " + platform.getName());
+        Log.i("Database", statusCombo.getSelectedItemPosition() + " " + status.getName());
         String userNotes = "";
 //        byte[] boxArt = null;
         int gameID = 0;
