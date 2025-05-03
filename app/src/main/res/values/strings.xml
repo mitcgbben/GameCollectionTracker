@@ -12,6 +12,16 @@
     <string name="aboutTitle">About</string>
     <string name="refresh">Refresh Games</string>
 
+    <string name="add">Add</string>
+    <string name="newPlatform">New Platform</string>
+    <string name="newStatus">New Status</string>
+    <string name="resetDatabase">Reset Database</string>
+    <string name="emptyPlatform">Please enter a platform</string>
+    <string name="emptyStatus">Please enter a status</string>
+
+    <string name="statusAdded">New Status Added</string>
+    <string name="platformAdded">New Platform Added</string>
+
     <!-- Game Details -->
     <string name="notesText">Notes:</string>
     <string name="backButton">Back</string>
@@ -51,5 +61,11 @@
     <string name="descriptionLabel">Description:</string>
     <string name="submitButton">Submit</string>
     <string name="cat">cat</string>
+
+    <string name="formSuccess">Game %1$s successfully</string>
+    <string name="formAdd">added</string>
+    <string name="formEdit">edited</string>
+    <string name="formError">Something went wrong..</string>
+
 
 </resources>

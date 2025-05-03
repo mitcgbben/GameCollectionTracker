@@ -1,10 +1,7 @@
-package com.example.bennettmitchell_final;
+package com.example.bennettmitchell_final.model;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
-import android.util.Log;
 
 // oh no
 public final class Database {
@@ -12,10 +9,11 @@ public final class Database {
     // just has information on the database
     private Database(Context context){} // plink
 
-
-
-
-
+    public enum Tables{
+        GAMES,
+        PLATFORMS,
+        STATUSES
+    }
     // define how the tables will look
     public static class GamesTable implements BaseColumns{
         public static final String TABLE_NAME = "Games";
@@ -38,10 +36,12 @@ public final class Database {
     }
 
     public static class PlatformTable implements BaseColumns{
-        public static final String TABLE_NAME = "Platforms";
+        public static final String TABLE_NAME = "Platforms";}
+        /*
         public static final String CN_NAME= "platformName";
         public static final String CN_ICON= "platformIcon";
     }
+     */
 
 
 

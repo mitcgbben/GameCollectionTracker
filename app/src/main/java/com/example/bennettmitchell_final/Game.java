@@ -21,6 +21,10 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.appcompat.content.res.AppCompatResources;
 
+import com.example.bennettmitchell_final.model.DBManager;
+import com.example.bennettmitchell_final.model.Database;
+import com.example.bennettmitchell_final.model.ImageHandler;
+
 public class Game implements Parcelable {
 
     private String title;
@@ -31,13 +35,14 @@ public class Game implements Parcelable {
     private String publisher;
     private String description;
     private String userNotes;
-    private int gameStatus;
-    private int platformID;
+    private Status gameStatus;
+//    private int gameStatus;
+    private Status platform;
     private int gameID;
 
     public Game(String title, String releaseDate, byte[] boxArt, String developer,
                 String publisher, String description, String userNotes,
-                int gameStatus, int platformID, int gameID){
+                Status gameStatus, Status platformID, int gameID){
         this.setTitle(title);
         this.setReleaseDate(releaseDate);
         this.setBoxArt(boxArt);
@@ -46,11 +51,11 @@ public class Game implements Parcelable {
         this.setDescription(description);
         this.setUserNotes(userNotes);
         this.setGameStatus(gameStatus);
-        this.setPlatformID(platformID);
+        this.setPlatform(platformID);
         this.setGameID(gameID);
     }
     public Game(String title){
-        this(title, "01/01/2000", null, "NOINFO", "NOINFO", "NOINFO", "", 0, 0, 0);
+        this(title, "01/01/2000", null, "NOINFO", "NOINFO", "NOINFO", "", new Status(), new Status(), 0);
     }
 
 
@@ -62,8 +67,8 @@ public class Game implements Parcelable {
         publisher = in.readString();
         description = in.readString();
         userNotes = in.readString();
-        gameStatus = in.readInt();
-        platformID = in.readInt();
+        gameStatus = (Status) DBManager.getGameIdentifier(Database.Tables.STATUSES, in.readInt());
+        platform = (Status) DBManager.getGameIdentifier(Database.Tables.PLATFORMS, in.readInt());
         gameID = in.readInt();
     }
 
@@ -76,8 +81,8 @@ public class Game implements Parcelable {
         dest.writeString(publisher);
         dest.writeString(description);
         dest.writeString(userNotes);
-        dest.writeInt(gameStatus);
-        dest.writeInt(platformID);
+        dest.writeInt(gameStatus.getID());
+        dest.writeInt(platform.getID());
         dest.writeInt(gameID);
     }
 
@@ -111,31 +116,14 @@ public class Game implements Parcelable {
 
     // allow to set image to bitmap
     public void setBoxArt(Bitmap bitmap){
-        this.setBoxArt(convertBitmap(bitmap));
+        this.setBoxArt(ImageHandler.convertBitmap(bitmap));
     }
 
 
-    // Converts from bitmap to byte array
-    private byte[] convertBitmap(Bitmap img){
-        if (img != null) {
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            img.compress(Bitmap.CompressFormat.JPEG, 50, stream);
-            byte[] byteArray = stream.toByteArray();
-            return byteArray;
-        }
-        else return null;
-    }
-    // Converts from byte array to bitmap
-    private Bitmap convertBitmap(byte[] img){
-        if (img != null) {
-            Bitmap bitmap = BitmapFactory.decodeByteArray(img, 0, img.length);
-            return bitmap;
-        }
-        else return null;
-    }
+
 
     public Bitmap getBoxArtDisplay(){
-        return convertBitmap(getBoxArt());
+        return ImageHandler.convertBitmap(getBoxArt());
     }
     public String getYear(){
         String[] dateArray = releaseDate.split("/");
@@ -161,10 +149,10 @@ public class Game implements Parcelable {
     public void setDescription(String description) {this.description = description;}
     public String getUserNotes() {return userNotes;}
     public void setUserNotes(String userNotes) {this.userNotes = userNotes;}
-    public int getGameStatus() {return gameStatus;}
-    public void setGameStatus(int gameStatus) {this.gameStatus = gameStatus;}
-    public int getPlatformID() {return platformID;}
-    public void setPlatformID(int platformID) {this.platformID = platformID;}
+    public Status getGameStatus() {return gameStatus;}
+    public void setGameStatus(Status gameStatus) {this.gameStatus = gameStatus;}
+    public Status getPlatform() {return platform;}
+    public void setPlatform(Status platformID) {this.platform = platformID;}
     public int getGameID(){return gameID;}
     public void setGameID(int gameID){this.gameID = gameID;}
 //    public Drawable getBoxArtDisplay(){return boxArtDisplay;}

@@ -1,23 +1,33 @@
-package com.example.bennettmitchell_final;
+package com.example.bennettmitchell_final.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class GameDetails extends AppCompatActivity {
+import com.example.bennettmitchell_final.GameID;
+import com.example.bennettmitchell_final.Status;
+import com.example.bennettmitchell_final.model.DBManager;
+import com.example.bennettmitchell_final.Game;
+import com.example.bennettmitchell_final.R;
+import com.example.bennettmitchell_final.model.Database;
+import com.example.bennettmitchell_final.model.ImageHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class GameDetails extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private Button backButton;
 
@@ -32,6 +42,9 @@ public class GameDetails extends AppCompatActivity {
     private Spinner statusCombo;
     private TextView description;
     private EditText userNotes;
+
+    private SpinnerAdapter adapter;
+    private ArrayList<GameID> statuses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +81,20 @@ public class GameDetails extends AppCompatActivity {
 //        userNotes.setText(game.getGameID() + " ");
         boxArt.setImageBitmap(game.getBoxArtDisplay());
 
-
-
-        // TODO : description, platform logo
+        Log.i("Database", "Status: " + game.getGameStatus().getName() + " | Console: " + game.getPlatform().getName());
+        platformLogo.setImageBitmap(game.getPlatform().getDisplayIcon());
 
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener((View v) -> {
             this.finish(); // end the screen
         });
+
+        // spinner :D //
+        statuses = (ArrayList<GameID>) DBManager.getGameIDs(Database.Tables.STATUSES);
+        adapter = new SpinnerAdapter(this, statuses);
+        statusCombo.setAdapter(adapter);
+        statusCombo.setOnItemSelectedListener(this);
+        statusCombo.setSelection(DBManager.findGameID(statuses, game.getGameStatus()));
     }
 
     @Override
@@ -119,5 +138,17 @@ public class GameDetails extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         //DBManager.close();
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        Status newStatus = (Status) statuses.get(position);
+        game.setGameStatus(newStatus);
+        DBManager.updateGame(game);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

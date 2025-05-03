@@ -183,16 +183,16 @@
 
     <Spinner
         android:id="@+id/platformCombo"
-        android:layout_width="122dp"
-        android:layout_height="48dp"
+        android:layout_width="173dp"
+        android:layout_height="49dp"
         app:layout_constraintBottom_toBottomOf="@+id/platformLabel"
         app:layout_constraintStart_toStartOf="@+id/publisherEdit"
         app:layout_constraintTop_toTopOf="@+id/platformLabel" />
 
     <Spinner
         android:id="@+id/statusCombo"
-        android:layout_width="122dp"
-        android:layout_height="48dp"
+        android:layout_width="172dp"
+        android:layout_height="52dp"
         app:layout_constraintBottom_toBottomOf="@+id/statusLabel"
         app:layout_constraintStart_toStartOf="@+id/platformCombo"
         app:layout_constraintTop_toTopOf="@+id/statusLabel" />
@@ -204,10 +204,9 @@
         android:contentDescription="@string/cat"
         app:layout_constraintBottom_toBottomOf="@+id/statusCombo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.765"
         app:layout_constraintStart_toEndOf="@+id/statusCombo"
         app:layout_constraintTop_toBottomOf="@+id/publisherEdit"
-        app:layout_constraintVertical_bias="0.756"
+        app:layout_constraintVertical_bias="0.736"
         app:srcCompat="@drawable/kitty" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

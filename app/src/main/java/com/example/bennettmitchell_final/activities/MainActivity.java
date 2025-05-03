@@ -1,7 +1,6 @@
-package com.example.bennettmitchell_final;
+package com.example.bennettmitchell_final.activities;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -10,20 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
+import com.example.bennettmitchell_final.model.DBManager;
+import com.example.bennettmitchell_final.Game;
+import com.example.bennettmitchell_final.R;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         DBManager.initDB(this);
+
+//        DBManager.reset();
+
 //        games = new ArrayList<>();
         // test games //
         /*

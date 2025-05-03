@@ -1,8 +1,7 @@
-package com.example.bennettmitchell_final;
+package com.example.bennettmitchell_final.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import com.example.bennettmitchell_final.model.APICaller;
+import com.example.bennettmitchell_final.Game;
+import com.example.bennettmitchell_final.R;
+
 import java.util.List;
 
 public class AddGame extends AppCompatActivity {

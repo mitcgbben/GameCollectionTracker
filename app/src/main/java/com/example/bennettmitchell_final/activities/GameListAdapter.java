@@ -1,10 +1,8 @@
-package com.example.bennettmitchell_final;
+package com.example.bennettmitchell_final.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.DeprecatedSinceApi;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bennettmitchell_final.Game;
+import com.example.bennettmitchell_final.R;
 
 import java.util.List;
 

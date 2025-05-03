@@ -5,23 +5,97 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <EditText
+        android:id="@+id/newStatusField"
+        android:layout_width="140dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="16dp"
+        android:autofillHints="status"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/newStatusLabel"
+        app:layout_constraintStart_toEndOf="@+id/newStatusLabel"
+        app:layout_constraintTop_toTopOf="@+id/newStatusLabel" />
+
     <Button
-        android:id="@+id/puyo"
+        android:id="@+id/newStatusButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="44dp"
-        android:text="puyo"
+        android:layout_marginStart="12dp"
+        android:text="@string/add"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toEndOf="@+id/newStatusField"
+        app:layout_constraintTop_toTopOf="@+id/newStatusField" />
+
+    <TextView
+        android:id="@+id/newStatusLabel"
+        android:layout_width="82dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:text="@string/newStatus"
+        android:textSize="14sp"
+        android:labelFor="@id/newStatusField"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/newPlatformField"
+        android:layout_width="140dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="8dp"
+        android:ems="10"
+        android:inputType="text"
+        android:text=""
+        android:autofillHints="platform"
+
+        app:layout_constraintBottom_toBottomOf="@+id/newPlatformLabel"
+        app:layout_constraintStart_toEndOf="@+id/newPlatformLabel"
+        app:layout_constraintTop_toTopOf="@+id/newPlatformLabel"
+        app:layout_constraintVertical_bias="0.38" />
+
     <Button
-        android:id="@+id/authTest"
+        android:id="@+id/newPlatformButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="68dp"
-        android:text="auth test"
+        android:layout_marginStart="12dp"
+        android:text="@string/add"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toEndOf="@+id/newPlatformField"
+        app:layout_constraintTop_toTopOf="@+id/newPlatformField" />
+
+    <TextView
+        android:id="@+id/newPlatformLabel"
+        android:layout_width="88dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:text="@string/newPlatform"
+        android:labelFor="@id/newPlatformField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newStatusLabel" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/resetDatabase"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newPlatformField" />
+
+    <Button
+        android:id="@+id/exitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/backButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/resetButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

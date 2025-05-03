@@ -1,19 +1,20 @@
-package com.example.bennettmitchell_final;
+package com.example.bennettmitchell_final.model;
 
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.provider.ContactsContract;
 import android.util.Log;
+
+import com.example.bennettmitchell_final.Game;
+import com.example.bennettmitchell_final.GameID;
+import com.example.bennettmitchell_final.Platform;
+import com.example.bennettmitchell_final.Status;
 
 import org.jetbrains.annotations.TestOnly;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class DBManager {
 
     private static SQLiteDatabase writeableDB;
     private static SQLiteDatabase readableDB;
+
     // define these important aspects to interact with the database
     /*
     public DBManager(Context context){
@@ -72,7 +74,7 @@ public class DBManager {
     // insert a game object //
     public static long insertGame(Game g){
         byte[] boxArt = g.getBoxArt();
-        return insertGame(g.getTitle(), g.getReleaseDate(), boxArt, g.getDeveloper(), g.getPublisher(), g.getDescription(), g.getUserNotes(), g.getGameStatus(), g.getPlatformID());
+        return insertGame(g.getTitle(), g.getReleaseDate(), boxArt, g.getDeveloper(), g.getPublisher(), g.getDescription(), g.getUserNotes(), g.getGameStatus().getID(), g.getPlatform().getID());
     }
 
 
@@ -85,8 +87,8 @@ public class DBManager {
         values.put(Database.GamesTable.CN_DEV, g.getDeveloper());
         values.put(Database.GamesTable.CN_PUB, g.getPublisher());
         values.put(Database.GamesTable.CN_DESC, g.getDescription());
-        values.put(Database.GamesTable.CN_STATUSID, g.getGameStatus());
-        values.put(Database.GamesTable.CN_PLATFORMID, g.getPlatformID());
+        values.put(Database.GamesTable.CN_STATUSID, g.getGameStatus().getID());
+        values.put(Database.GamesTable.CN_PLATFORMID, g.getPlatform().getID());
         values.put(Database.GamesTable.CN_BOXART, g.getBoxArt());
 
 
@@ -120,11 +122,13 @@ public class DBManager {
             String publisher = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PUB));
             String description = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_DESC));
             String notes = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_USERNOTES));
-            int status = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_STATUSID));
-            int platform = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PLATFORMID));
+            int statusID = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_STATUSID));
+            int platformID = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PLATFORMID));
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable._ID));
 //            Log.d("Database", Integer.toString(id));
 
+            Status status = (Status) getGameIdentifier(Database.Tables.STATUSES, statusID);
+            Status platform = (Status) getGameIdentifier(Database.Tables.PLATFORMS, statusID);
 
             game = new Game(title, releaseDate, boxArt, developer, publisher, description, notes, status, platform, id);
         }
@@ -155,10 +159,19 @@ public class DBManager {
             String publisher = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PUB));
             String description = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_DESC));
             String notes = cursor.getString(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_USERNOTES));
-            int status = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_STATUSID));
-            int platform = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PLATFORMID));
+            int statusID = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_STATUSID));
+            int platformID = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable.CN_PLATFORMID));
             int id = cursor.getInt(cursor.getColumnIndexOrThrow(Database.GamesTable._ID));
             Log.d("Database", Integer.toString(id));
+
+            if (statusID < 0){
+                statusID = 0;
+            }
+            if (platformID < 0){
+                platformID = 0;
+            }
+            Status status = (Status) getGameIdentifier(Database.Tables.STATUSES, statusID);
+            Status platform = (Status) getGameIdentifier(Database.Tables.PLATFORMS, platformID);
 
             Game game = new Game(title, releaseDate, boxArt, developer, publisher, description, notes, status, platform, id);
             games.add(game);
@@ -178,6 +191,73 @@ public class DBManager {
         Log.i("Database", gameID + " Deleted items: " + deletedRows);
 //        db.close();
         return deletedRows;
+    }
+
+    /// Statuses and Platforms ///
+    public static List<GameID> getGameIDs(Database.Tables dest){
+        String tableName = (dest == Database.Tables.PLATFORMS) ? Database.PlatformTable.TABLE_NAME : Database.StatusTable.TABLE_NAME;
+
+        Cursor cursor = readableDB.query(tableName, null, null, null, null, null, null);
+
+        ArrayList<GameID> statuses = new ArrayList<>();
+        while (cursor.moveToNext()){
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(Database.StatusTable.CN_NAME));
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(Database.StatusTable._ID));
+            byte[]  icon = cursor.getBlob(cursor.getColumnIndexOrThrow(Database.StatusTable.CN_ICON));
+            Status s = new Status(name, id, icon);
+            statuses.add(s); // :3
+        }
+        cursor.close();
+        return statuses;
+    }
+
+    public static void addGameID(Database.Tables dest, GameID p){
+        // it feels like this line came to me in a manic episode lmao
+        String tableName = (dest == Database.Tables.PLATFORMS) ? Database.PlatformTable.TABLE_NAME : Database.StatusTable.TABLE_NAME;
+        ContentValues values = new ContentValues();
+        values.put(Database.StatusTable.CN_NAME, p.getName());
+        values.put(Database.StatusTable.CN_ICON, p.getIcon());
+
+        long newRow = writeableDB.insert(tableName, null, values);
+        p.setID((int) newRow);
+    }
+    public static void removeGameID(Database.Tables dest, int id){
+        String tableName = (dest == Database.Tables.PLATFORMS) ? Database.PlatformTable.TABLE_NAME : Database.StatusTable.TABLE_NAME;
+    }
+
+    public static int findGameID(ArrayList<GameID> list, GameID subject){
+        int index = -1;
+        for (int i = 0; i < list.size(); i++){
+            if (list.get(i).getID() == subject.getID()){
+                index = i;
+                break;
+            }
+        }
+        return index;
+    }
+    public static GameID getGameIdentifier(Database.Tables dest, int id){
+        // :3
+        id = Math.max(id, 0);
+        String tableName = (dest == Database.Tables.PLATFORMS) ? Database.PlatformTable.TABLE_NAME : Database.StatusTable.TABLE_NAME;
+        String selection = Database.StatusTable._ID + " LIKE ?";
+        String[] args = {Integer.toString(id)};
+
+        Cursor cursor = readableDB.query(tableName, null, selection, args, null, null, null);
+        cursor.moveToNext();
+        Status s;
+        try {
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(Database.StatusTable.CN_NAME)); // its 1 am but the different between Database.StatusTable and Database.PlatformTable is literally just Database.?.TABLE_NAME
+            int idID = cursor.getInt(cursor.getColumnIndexOrThrow(Database.StatusTable._ID));                   // i should sleep but the grind never stops!!!!!
+            byte[] icon = cursor.getBlob(cursor.getColumnIndexOrThrow(Database.StatusTable.CN_ICON));
+            s = new Status(name, id, icon);
+        }
+        // if there are no game ids in the results
+        catch(CursorIndexOutOfBoundsException e){
+            s = new Status();
+        }
+
+        cursor.close();
+        return s;
     }
 
     // test

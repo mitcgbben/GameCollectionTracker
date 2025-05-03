@@ -1,12 +1,10 @@
-package com.example.bennettmitchell_final;
+package com.example.bennettmitchell_final.model;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
-import androidx.appcompat.content.res.AppCompatResources;
+import com.example.bennettmitchell_final.Game;
 
 import org.jetbrains.annotations.TestOnly;
 import org.json.JSONArray;
@@ -22,8 +20,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,7 +49,6 @@ public class APICaller {
     }
     // anonymous function :D
 
-    private static Runnable other = () -> {Log.i("API", "test");};
 
     // crying about these being public in the code i tried to put them in the apps environment
     private static String clientID = "dk7y9m5rzgwaombcvdt6zs2cnkkrza";
@@ -134,7 +129,7 @@ public class APICaller {
 //                Log.d("API", Integer.toString(releaseDate));
                 String releaseDateS = "";
                 String publisher = "";
-                Game newGame = new Game(name, releaseDateS, null, null, publisher, description, "", 0, 0, 0);
+                Game newGame = new Game(name, releaseDateS, null, null, publisher, description, "", null, null, 0);
 //                int cover = gameJson.optInt("cover");
                 JSONObject cover = gameJson.optJSONObject("cover");
                 if (cover != null){
@@ -142,7 +137,7 @@ public class APICaller {
                     if (!id.isEmpty()){
                         String url = imageURL + id + ".jpg";
                         Log.d("API", url);
-                        newGame.setBoxArt(APICaller.getImageFromWeb(url));
+                        newGame.setBoxArt(ImageHandler.getImageFromWeb(url));
                     }
                     else{
                         Log.d("API","id was empty");
@@ -280,37 +275,6 @@ public class APICaller {
             return null;
         }
     }
-
-    // takes a context to pull from resources
-    public static Bitmap getImageFromWeb(String url){
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Future<Bitmap> future = executor.submit(new Callable<Bitmap>() {
-            @Override
-            public Bitmap call() throws Exception {
-                if (url != null) {
-                    try {
-                        InputStream inputStream = (InputStream) new URL(url).getContent();
-                        Bitmap draw = BitmapFactory.decodeStream(inputStream);
-//                      Drawable draw = Drawable.createFromStream(inputStream, "Box Art");
-                        return draw;
-                    } catch (MalformedURLException e) {
-                        Log.e("Image Error", "Malformed URL");
-                    } catch (IOException e) {
-                        Log.e("Image Error", "IO Exception");
-                    } catch (Exception e) {
-                        Log.e("Image Error", e.toString());
-                    }
-                }
-                return null;
-            }
-        });
-        try{
-            return future.get();
-        } catch (ExecutionException | InterruptedException e) {
-            return null;
-        }
-    }
-
 
     // could throw jsonexception
     @TestOnly
