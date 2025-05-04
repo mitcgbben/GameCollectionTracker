@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.bennettmitchell_final.R;
 import com.example.bennettmitchell_final.Status;
 
 // create a sqlite helper class to interact with the database
@@ -49,18 +50,18 @@ public class DBHelper extends SQLiteOpenHelper {
         DBManager.addGameID(Database.Tables.STATUSES, s);
 
         Status p = new Status("Nintendo Switch");
-        p.setIcon("https://cdn-icons-png.freepik.com/512/871/871377.png");
+        p.setIcon(ImageHandler.getResource(R.drawable.nin_switch));
         DBManager.addGameID(Database.Tables.PLATFORMS, p);
 
         p = new Status("Steam");
-        p.setIcon("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSxGO4EhQ7D-WGkACs80pjzaVn4_OdPitQOhQ&s");
+        p.setIcon(ImageHandler.getResource(R.drawable.steam));
         DBManager.addGameID(Database.Tables.PLATFORMS, p);
 
         p = new Status("Playstation 5");
-        p.setIcon("https://assets.streamlinehq.com/image/private/w_300,h_300,ar_1/f_auto/v1/icons/logos/playstation-2cetgyoi1mw8t1cvih46mb.png/playstation-ktylduek6wayw5ofc27ijf.png?_a=DATAdtAAZAA0");
+        p.setIcon(ImageHandler.getResource(R.drawable.ps5));
         DBManager.addGameID(Database.Tables.PLATFORMS, p);
         p = new Status("Xbox");
-        p.setIcon("https://upload.wikimedia.org/wikipedia/commons/e/e5/Xbox_Logo.svg");
+        p.setIcon(ImageHandler.getResource(R.drawable.xbox));
         DBManager.addGameID(Database.Tables.PLATFORMS, p);
 
 

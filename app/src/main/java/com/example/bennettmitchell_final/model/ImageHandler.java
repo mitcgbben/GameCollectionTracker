@@ -1,7 +1,9 @@
 package com.example.bennettmitchell_final.model;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -18,6 +20,7 @@ import java.util.concurrent.Future;
 public class ImageHandler {
     // this was officially the point where i had to start putting stuff into seperate modules.
 
+    private static Resources res;
     // Converts from bitmap to byte array
     public static byte[] convertBitmap(Bitmap img){
         if (img != null) {
@@ -64,5 +67,10 @@ public class ImageHandler {
         } catch (ExecutionException | InterruptedException e) {
             return null;
         }
+    }
+    public static void setRes(Resources r){res = r;}
+
+    public static Bitmap getResource(int id){
+        return BitmapFactory.decodeResource(res, id);
     }
 }

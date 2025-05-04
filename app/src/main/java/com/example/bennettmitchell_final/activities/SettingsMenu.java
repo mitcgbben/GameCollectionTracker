@@ -1,6 +1,7 @@
 package com.example.bennettmitchell_final.activities;
 
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,8 +74,23 @@ public class SettingsMenu extends DialogFragment {
         doneButton.setOnClickListener((View v) -> {this.dismiss();});
 
         resetButton.setOnClickListener((View v) ->{
-            //TODO PUT A CONFIRMATION
-            DBManager.reset();
+            AlertDialog.Builder confirmBuilder = new AlertDialog.Builder(getContext());
+            confirmBuilder.setTitle(R.string.alert);
+            confirmBuilder.setMessage(R.string.confirmMessage);
+
+            confirmBuilder.setNegativeButton(R.string.no, (DialogInterface.OnClickListener) (dialog, which) -> {
+                dialog.dismiss();
+            });
+            confirmBuilder.setPositiveButton(R.string.yes, (DialogInterface.OnClickListener) (dialog, which) ->{
+                DBManager.reset();
+                Toast.makeText(getContext(), R.string.databaseCleared, Toast.LENGTH_LONG).show();
+                dialog.dismiss();
+                this.dismiss();
+            });
+            AlertDialog confirm = confirmBuilder.create();
+            confirm.show();
+
+
         });
 
 

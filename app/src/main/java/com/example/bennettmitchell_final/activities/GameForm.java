@@ -1,6 +1,7 @@
 package com.example.bennettmitchell_final.activities;
 
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +22,12 @@ import com.example.bennettmitchell_final.Game;
 import com.example.bennettmitchell_final.R;
 import com.example.bennettmitchell_final.model.Database;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class GameForm extends AppCompatActivity{
 
@@ -97,12 +103,12 @@ public class GameForm extends AppCompatActivity{
                 // jump to preselected status
                 Status importedStatus =  importedGame.getGameStatus();
                 if (importedStatus != null) {
-                    int statusNum = statuses.indexOf(importedStatus);
+                    int statusNum = DBManager.findGameID(statuses, importedGame.getGameStatus());
                     statusCombo.setSelection(statusNum);
                 }
                 Status importedPlatform = importedGame.getPlatform();
                 if (importedPlatform != null){
-                    int platformNum = platforms.indexOf(importedPlatform);
+                    int platformNum = DBManager.findGameID(platforms, importedGame.getPlatform());
                     platformCombo.setSelection(platformNum);
                 }
             }
@@ -163,13 +169,26 @@ public class GameForm extends AppCompatActivity{
         String developer = developerEdit.getText().toString();
         String publisher = publisherEdit.getText().toString();
         String description = descriptionEdit.getText().toString();
+
         Status status = (Status) statuses.get(statusCombo.getSelectedItemPosition());
         Status platform = (Status) platforms.get(platformCombo.getSelectedItemPosition());
-        Log.i("Database", platformCombo.getSelectedItemPosition() + " " + platform.getName());
-        Log.i("Database", statusCombo.getSelectedItemPosition() + " " + status.getName());
+
+        Log.i("Database", platforms.get(platformCombo.getSelectedItemPosition()).getName() + " " + platform.getName());
+        Log.i("Database", statuses.get(statusCombo.getSelectedItemPosition()).getName() + " " + status.getName());
         String userNotes = "";
 //        byte[] boxArt = null;
         int gameID = 0;
+        String releaseDateF = "1/1/2000";
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+        try{
+            // parse so the user can enter any dumb stuff
+            Date release = sdf.parse(releaseDate);
+            releaseDateF = sdf.format(release);
+            Log.i("plink", releaseDateF);
+        } catch (ParseException e) {
+            releaseDateF = "1/1/2000";
+        }
+
 
         if (action){
             userNotes = importedGame.getUserNotes();
@@ -178,7 +197,7 @@ public class GameForm extends AppCompatActivity{
 //            boxArt = importedGame.getBoxArt();
         }
 //        boxArt = BitmapFactory.decodeResource(getResources(), R.drawable.dog);
-        Game tempGame = new Game(title, releaseDate, importedBoxArt, developer, publisher, description, userNotes, status, platform, gameID);
+        Game tempGame = new Game(title, releaseDateF, importedBoxArt, developer, publisher, description, userNotes, status, platform, gameID);
         return tempGame;
     }
 

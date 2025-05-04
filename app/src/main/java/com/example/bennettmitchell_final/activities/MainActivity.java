@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.bennettmitchell_final.model.DBManager;
 import com.example.bennettmitchell_final.Game;
 import com.example.bennettmitchell_final.R;
+import com.example.bennettmitchell_final.model.ImageHandler;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ImageHandler.setRes(getResources());
         DBManager.initDB(this);
 
 //        DBManager.reset();

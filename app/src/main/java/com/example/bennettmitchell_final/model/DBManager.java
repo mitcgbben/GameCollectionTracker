@@ -46,13 +46,12 @@ public class DBManager {
         // database in write mode
 //       SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-       // TODO FORMAT DATES
-        String releaseDateF = "1/1/2000";
+
 
        // map of values to insert
         ContentValues values = new ContentValues();
         values.put(Database.GamesTable.CN_TITLE, title);
-        values.put(Database.GamesTable.CN_RELEASE, releaseDateF);
+        values.put(Database.GamesTable.CN_RELEASE, releaseDate);
         values.put(Database.GamesTable.CN_BOXART, boxArt);
         values.put(Database.GamesTable.CN_DEV, developer);
         values.put(Database.GamesTable.CN_PUB, publisher);

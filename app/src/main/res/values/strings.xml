@@ -21,6 +21,11 @@
 
     <string name="statusAdded">New Status Added</string>
     <string name="platformAdded">New Platform Added</string>
+    <string name="databaseCleared">Database Reset. Please refresh.</string>
+    <string name="alert">ALERT</string>
+    <string name="confirmMessage">THIS ACTION CANNOT BE UNDONE, ARE YOU SURE?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 
     <!-- Game Details -->
     <string name="notesText">Notes:</string>

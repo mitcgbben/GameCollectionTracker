@@ -21,10 +21,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -58,7 +60,7 @@ public class APICaller {
     private static String imageURL = "https://images.igdb.com/igdb/image/upload/t_cover_small/";
 
 
-    private static String query = "fields name,summary,involved_companies,platforms,cover.image_id,first_release_date; search \"&\"; limit 20; where parent_game = null;";
+    private static String query = "fields name,summary,involved_companies.developer, involved_companies.publisher, involved_companies.company.name,platforms,cover.image_id,first_release_date; search \"&\"; limit 20; where parent_game = null;";
 
     private static void authTwitch() throws ConnectionException {authTwitch(10);}
     private static void authTwitch(int maxAttempts) throws ConnectionException{
@@ -124,20 +126,42 @@ public class APICaller {
                 String description = gameJson.optString("summary");
                 int releaseDate = gameJson.optInt("first_release_date");
                 JSONArray companies = gameJson.optJSONArray("involved_companies");
-                JSONArray platforms = gameJson.optJSONArray("platforms");
+//                JSONArray platforms = gameJson.optJSONArray("platforms");
 
-                Date plink = new Date(releaseDate);
+                Date plink = new Date((long) (releaseDate * 1000L));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 //                Log.d("API", Integer.toString(releaseDate));
-                String releaseDateS = "";
+                String releaseDateS = dateFormat.format(plink);
                 String publisher = "";
-                Game newGame = new Game(name, releaseDateS, null, null, publisher, description, "", new Status(), new Status(), 0);
+                String developer = "";
+                if (companies != null){
+                    int length = companies.length();
+                    for (int j = 0; j < length; j++){
+                        JSONObject companyJson = companies.optJSONObject(j);
+                        if (companyJson != null) {
+//                            Log.d("API", "Outer company not null");
+                            JSONObject companyInfo = companyJson.optJSONObject("company");
+                            if (companyInfo != null) {
+                                String companyName = companyInfo.optString("name");
+//                                Log.d("API", "Inner Company #" + j + " for game " + name + " not null " + companyName);
+                                if (companyJson.getBoolean("developer")) {
+                                    developer = companyName;
+                                }
+                                if (companyJson.getBoolean("publisher")) {
+                                    publisher = companyName;
+                                }
+                            }
+                        }
+                    }
+                }
+                Game newGame = new Game(name, releaseDateS, null, developer, publisher, description, "", new Status(), new Status(), 0);
 //                int cover = gameJson.optInt("cover");
                 JSONObject cover = gameJson.optJSONObject("cover");
                 if (cover != null){
                     String id = cover.optString("image_id");
                     if (!id.isEmpty()){
                         String url = imageURL + id + ".jpg";
-                        Log.d("API", url);
+//                        Log.d("API", url);
                         newGame.setBoxArt(ImageHandler.getImageFromWeb(url));
                     }
                     else{
