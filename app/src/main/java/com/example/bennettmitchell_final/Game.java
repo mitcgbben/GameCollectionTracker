@@ -105,7 +105,7 @@ public class Game implements Parcelable {
 
     @Override
     public String toString(){
-        String msg = "Title: " + title + "( " + getYear() + ") from: " + publisher;
+        String msg = "Title: " + title + "( " + getYear() + ") from: " + publisher + " Status: " + getGameStatus().getName() + " | Platform: " + getPlatform().getName();
         return msg;
     }
 

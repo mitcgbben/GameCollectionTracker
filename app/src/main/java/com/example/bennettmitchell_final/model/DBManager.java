@@ -82,7 +82,7 @@ public class DBManager {
 
         ContentValues values = new ContentValues();
         values.put(Database.GamesTable.CN_TITLE, g.getTitle());
-        values.put(Database.GamesTable.CN_RELEASE, g.getTitle());
+        values.put(Database.GamesTable.CN_RELEASE, g.getReleaseDate());
         values.put(Database.GamesTable.CN_DEV, g.getDeveloper());
         values.put(Database.GamesTable.CN_PUB, g.getPublisher());
         values.put(Database.GamesTable.CN_DESC, g.getDescription());
@@ -90,14 +90,11 @@ public class DBManager {
         values.put(Database.GamesTable.CN_PLATFORMID, g.getPlatform().getID());
         values.put(Database.GamesTable.CN_BOXART, g.getBoxArt());
 
-
-
         String selection = Database.GamesTable._ID + " LIKE ?";
         String[] args = {Integer.toString(g.getGameID())};
 
         return writeableDB.update(Database.GamesTable.TABLE_NAME, values, selection, args);
     }
-    // TODO : udpate status or user notes
     public static long updateGameShort(){
         return 1;
     }
@@ -127,7 +124,7 @@ public class DBManager {
 //            Log.d("Database", Integer.toString(id));
 
             Status status = (Status) getGameIdentifier(Database.Tables.STATUSES, statusID);
-            Status platform = (Status) getGameIdentifier(Database.Tables.PLATFORMS, statusID);
+            Status platform = (Status) getGameIdentifier(Database.Tables.PLATFORMS, platformID);
 
             game = new Game(title, releaseDate, boxArt, developer, publisher, description, notes, status, platform, id);
         }
@@ -232,6 +229,7 @@ public class DBManager {
                 break;
             }
         }
+        Log.d("plink",Integer.toString(index));
         return index;
     }
     public static GameID getGameIdentifier(Database.Tables dest, int id){

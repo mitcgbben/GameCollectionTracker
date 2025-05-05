@@ -140,6 +140,7 @@ public class GameForm extends AppCompatActivity{
             // TODO : Validate data and then add to database
             try{
                 Game newGame = buildGame();
+                Log.d("Game", newGame.toString());
                 if (!action){
                     // Add game
                     DBManager.insertGame(newGame);

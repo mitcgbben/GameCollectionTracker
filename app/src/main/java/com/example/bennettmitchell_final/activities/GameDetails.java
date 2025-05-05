@@ -127,7 +127,7 @@ public class GameDetails extends AppCompatActivity implements AdapterView.OnItem
     protected void onRestart(){
         // on page restart, reload the same page
         super.onRestart();
-
+        Log.d("plink", "onrestart");
         Intent intent = getIntent();
         intent.putExtra("Game", DBManager.getGame(game.getGameID()));
         finish();
@@ -144,7 +144,8 @@ public class GameDetails extends AppCompatActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Status newStatus = (Status) statuses.get(position);
         game.setGameStatus(newStatus);
-        DBManager.updateGame(game);
+//        DBManager.updateGame(game);
+
     }
 
     @Override

@@ -18,12 +18,16 @@
 
     <TextView
         android:id="@+id/gameTitle"
+        android:minWidth="200dp"
+        android:maxWidth="200dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="28dp"
+        android:layout_height="84dp"
+        android:layout_marginStart="8dp"
+        android:gravity="center_vertical"
         android:text="TextView"
         android:textStyle="bold"
+
+        app:layout_constraintBottom_toBottomOf="@+id/boxArt"
         app:layout_constraintStart_toEndOf="@+id/boxArt"
         app:layout_constraintTop_toTopOf="@+id/boxArt" />
 
@@ -43,7 +47,7 @@
         android:id="@+id/platformIcon"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="12dp"
         app:layout_constraintBottom_toBottomOf="@+id/selectButton"
         app:layout_constraintEnd_toStartOf="@+id/selectButton"
         app:layout_constraintTop_toTopOf="@+id/selectButton"

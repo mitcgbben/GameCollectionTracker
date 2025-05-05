@@ -37,20 +37,20 @@ public class DBHelper extends SQLiteOpenHelper {
 
     private void addDefaults(){
         Status s = new Status("Not Played");
-
+        // no icon
         DBManager.addGameID(Database.Tables.STATUSES, s);
         s = new Status("In Progress");
-
+        s.setIcon(ImageHandler.getResource(R.drawable.played));
         DBManager.addGameID(Database.Tables.STATUSES, s);
         s = new Status("Beaten");
-
+        s.setIcon(ImageHandler.getResource(R.drawable.beaten));
         DBManager.addGameID(Database.Tables.STATUSES, s);
         s = new Status("100% Complete");
-
+        s.setIcon(ImageHandler.getResource(R.drawable.complete));
         DBManager.addGameID(Database.Tables.STATUSES, s);
 
         Status p = new Status("Nintendo Switch");
-        p.setIcon(ImageHandler.getResource(R.drawable.nin_switch));
+        p.setIcon(ImageHandler.getResource(R.drawable.ninswitch));
         DBManager.addGameID(Database.Tables.PLATFORMS, p);
 
         p = new Status("Steam");
