@@ -2,6 +2,8 @@ package com.example.bennettmitchell_final.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
@@ -69,6 +71,9 @@ public class GameDetails extends AppCompatActivity implements AdapterView.OnItem
         description = findViewById(R.id.gameDescription);
         userNotes = findViewById(R.id.gameUserNotes);
 
+
+
+
         // display the information //
         String dispTitle = getString(R.string.titleDisplay);
         dispTitle = String.format(dispTitle, game.getTitle(), game.getYear());
@@ -87,6 +92,22 @@ public class GameDetails extends AppCompatActivity implements AdapterView.OnItem
         backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener((View v) -> {
             this.finish(); // end the screen
+        });
+
+        userNotes.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override
+            public void afterTextChanged(Editable s) {
+//                Log.i("TextWatch", "after");
+
+                String text = s.toString();
+//                Log.i("TextWatch", text);
+                game.setUserNotes(text);
+                DBManager.updateGame(game);
+            }
         });
 
         // spinner :D //

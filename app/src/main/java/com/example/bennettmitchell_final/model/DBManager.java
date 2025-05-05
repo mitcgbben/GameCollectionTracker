@@ -89,6 +89,7 @@ public class DBManager {
         values.put(Database.GamesTable.CN_STATUSID, g.getGameStatus().getID());
         values.put(Database.GamesTable.CN_PLATFORMID, g.getPlatform().getID());
         values.put(Database.GamesTable.CN_BOXART, g.getBoxArt());
+        values.put(Database.GamesTable.CN_USERNOTES, g.getUserNotes());
 
         String selection = Database.GamesTable._ID + " LIKE ?";
         String[] args = {Integer.toString(g.getGameID())};
