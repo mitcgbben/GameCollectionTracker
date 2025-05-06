@@ -32,7 +32,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_GAMES);
         Log.i("Database","Created Games");
         Log.i("database", "Database Created");
-        addDefaults();
     }
 
     private void addDefaults(){

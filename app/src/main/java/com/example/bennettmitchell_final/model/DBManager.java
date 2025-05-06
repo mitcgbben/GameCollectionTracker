@@ -11,6 +11,7 @@ import android.util.Log;
 import com.example.bennettmitchell_final.Game;
 import com.example.bennettmitchell_final.GameID;
 import com.example.bennettmitchell_final.Platform;
+import com.example.bennettmitchell_final.R;
 import com.example.bennettmitchell_final.Status;
 
 import org.jetbrains.annotations.TestOnly;
@@ -37,8 +38,10 @@ public class DBManager {
         dbHelper = new DBHelper(context);
         writeableDB = dbHelper.getWritableDatabase();
         readableDB = dbHelper.getReadableDatabase();
+        addDefaults();
     }
-
+    public static void setWriteableDB(SQLiteDatabase w){writeableDB = w;}
+    public static void setReadableDB(SQLiteDatabase r){readableDB = r;}
     //  its as shrimple as that
     public static long insertGame(String title, String releaseDate, byte[] boxArt, String developer,
                            String publisher, String description, String userNotes,
@@ -275,6 +278,39 @@ public class DBManager {
          cursor.close();
      }
 
+    public static void addDefaults(){
+        List<GameID> status = getGameIDs(Database.Tables.STATUSES);
+        if (status.isEmpty()) {
+            Status s = new Status("Not Played");
+            // no icon
+            DBManager.addGameID(Database.Tables.STATUSES, s);
+            s = new Status("In Progress");
+            s.setIcon(ImageHandler.getResource(R.drawable.played));
+            DBManager.addGameID(Database.Tables.STATUSES, s);
+            s = new Status("Beaten");
+            s.setIcon(ImageHandler.getResource(R.drawable.beaten));
+            DBManager.addGameID(Database.Tables.STATUSES, s);
+            s = new Status("100% Complete");
+            s.setIcon(ImageHandler.getResource(R.drawable.complete));
+            DBManager.addGameID(Database.Tables.STATUSES, s);
+
+            Status p = new Status("Nintendo Switch");
+            p.setIcon(ImageHandler.getResource(R.drawable.ninswitch));
+            DBManager.addGameID(Database.Tables.PLATFORMS, p);
+
+            p = new Status("Steam");
+            p.setIcon(ImageHandler.getResource(R.drawable.steam));
+            DBManager.addGameID(Database.Tables.PLATFORMS, p);
+
+            p = new Status("Playstation 5");
+            p.setIcon(ImageHandler.getResource(R.drawable.ps5));
+            DBManager.addGameID(Database.Tables.PLATFORMS, p);
+            p = new Status("Xbox");
+            p.setIcon(ImageHandler.getResource(R.drawable.xbox));
+            DBManager.addGameID(Database.Tables.PLATFORMS, p);
+        }
+
+    }
      public static void reset(){
          SQLiteDatabase db = dbHelper.getReadableDatabase();
          dbHelper.onCreate(db);

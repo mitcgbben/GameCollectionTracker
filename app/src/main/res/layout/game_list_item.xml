@@ -24,6 +24,7 @@
         android:layout_height="84dp"
         android:layout_marginStart="8dp"
         android:gravity="center_vertical"
+        android:textColor="@color/black"
         android:text="TextView"
         android:textStyle="bold"
 
