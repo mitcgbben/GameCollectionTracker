@@ -178,7 +178,7 @@ public class GameDetails extends AppCompatActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         Status newStatus = (Status) statuses.get(position);
         game.setGameStatus(newStatus);
-//        DBManager.updateGame(game);
+        DBManager.updateGame(game); // this line was commented out in the video
 
     }
 
