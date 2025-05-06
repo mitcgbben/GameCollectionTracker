@@ -1,13 +1,17 @@
 package com.example.bennettmitchell_final.activities;
 
+import static java.lang.Math.abs;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bennettmitchell_final.GameID;
@@ -24,12 +30,10 @@ import com.example.bennettmitchell_final.model.DBManager;
 import com.example.bennettmitchell_final.Game;
 import com.example.bennettmitchell_final.R;
 import com.example.bennettmitchell_final.model.Database;
-import com.example.bennettmitchell_final.model.ImageHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class GameDetails extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class GameDetails extends AppCompatActivity implements AdapterView.OnItemSelectedListener, GestureDetector.OnGestureListener {
 
     private Button backButton;
 
@@ -48,11 +52,20 @@ public class GameDetails extends AppCompatActivity implements AdapterView.OnItem
     private SpinnerAdapter adapter;
     private ArrayList<GameID> statuses;
 
+    public GestureDetector gDetector;
+    private static int MIN_Y_SWIPE = 0;
+    private static int MAX_Y_SWIPE = 400;
+
+    private static int MIN_X_SWIPE = -1000;
+    private static int MAX_X_SWIPE = -50;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.game_details);
         Log.i("plink", "Got to Game Details");
+
+        gDetector = new GestureDetector(this, this);
         // ! Do i need to change the context?
 
         // get game from extras
@@ -172,5 +185,39 @@ public class GameDetails extends AppCompatActivity implements AdapterView.OnItem
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+    @Override
+    public boolean onDown(@NonNull MotionEvent e) {
+        return false;
+    }
+    @Override
+    public void onShowPress(@NonNull MotionEvent e) {}
+    @Override
+    public boolean onSingleTapUp(@NonNull MotionEvent e) {
+        return false;
+    }
+    @Override
+    public boolean onScroll(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+    @Override
+    public void onLongPress(@NonNull MotionEvent e) {}
+
+    @Override
+    public boolean onFling(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+        float deltaY = abs(e1.getY() - e2.getY());
+        float deltaX = e1.getX() - e2.getX();
+        Log.i("plink", deltaX + "");
+
+        if ((deltaY >= MIN_Y_SWIPE && deltaY <= MAX_Y_SWIPE) && (deltaX >= MIN_X_SWIPE && deltaX <= MAX_X_SWIPE)) {
+            this.finish();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        this.gDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 }

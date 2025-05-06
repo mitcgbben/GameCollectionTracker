@@ -1,12 +1,19 @@
 package com.example.bennettmitchell_final.activities;
 
+import static java.lang.Math.abs;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,7 +24,7 @@ import com.example.bennettmitchell_final.R;
 
 import java.util.List;
 
-public class AddGame extends AppCompatActivity {
+public class AddGame extends AppCompatActivity implements GestureDetector.OnGestureListener {
     private TextView screenLabel;
     private EditText searchBar;
     private Button searchButton;
@@ -29,12 +36,20 @@ public class AddGame extends AppCompatActivity {
     private GameListAdapter adapter;
     private List<Game> games;
 
+    public GestureDetector gDetector;
+    private static int MIN_Y_SWIPE = 0;
+    private static int MAX_Y_SWIPE = 400;
+
+    private static int MIN_X_SWIPE = -1000;
+    private static int MAX_X_SWIPE = -50;
+
     @Override
     protected void onCreate(Bundle SavedInstanceState){
         super.onCreate(SavedInstanceState);
         setContentView(R.layout.add_game);
 
         screenLabel = findViewById(R.id.topLabel);
+        gDetector = new GestureDetector(this, this);
 
         // search //
         searchBar = findViewById(R.id.searchBar);
@@ -98,5 +113,40 @@ public class AddGame extends AppCompatActivity {
         backButton.setOnClickListener((View v) -> {
             this.finish(); // end the screen
         });
+    }
+
+    @Override
+    public boolean onDown(@NonNull MotionEvent e) {
+        return false;
+    }
+    @Override
+    public void onShowPress(@NonNull MotionEvent e) {}
+    @Override
+    public boolean onSingleTapUp(@NonNull MotionEvent e) {
+        return false;
+    }
+    @Override
+    public boolean onScroll(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+    @Override
+    public void onLongPress(@NonNull MotionEvent e) {}
+
+    @Override
+    public boolean onFling(@Nullable MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
+        float deltaY = abs(e1.getY() - e2.getY());
+        float deltaX = e1.getX() - e2.getX();
+        Log.i("plink", deltaX + "");
+
+        if ((deltaY >= MIN_Y_SWIPE && deltaY <= MAX_Y_SWIPE) && (deltaX >= MIN_X_SWIPE && deltaX <= MAX_X_SWIPE)) {
+            this.finish();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event){
+        this.gDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 }
