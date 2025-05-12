@@ -314,6 +314,7 @@ public class DBManager {
      public static void reset(){
          SQLiteDatabase db = dbHelper.getReadableDatabase();
          dbHelper.onCreate(db);
+         addDefaults();
      }
      public static void close(){
         dbHelper.close();
